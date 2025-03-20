@@ -1,3 +1,11 @@
+<?php
+// You can add any necessary PHP code here, such as session handling or form validation
+if (isset($_GET["error"]) && $_GET["error"] == "none") {
+    header("Location: index.php");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -49,7 +57,7 @@
             <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
 
               <div class="d-flex justify-content-center py-4">
-                <a href="index.html" class="logo d-flex align-items-center w-auto">
+                <a href="index.php" class="logo d-flex align-items-center w-auto">
                   <img src="assets/img/logo.png" alt="">
                   <span class="d-none d-lg-block">NiceAdmin</span>
                 </a>
@@ -64,7 +72,7 @@
                     <p class="text-center small">Enter your personal details to create account</p>
                   </div>
 
-                  <form class="row g-3 needs-validation" novalidate>
+                  <form class="row g-3 needs-validation" action="register.inc.php" method="post" novalidate>
                     <div class="col-12">
                       <label for="yourName" class="form-label">Your Name</label>
                       <input type="text" name="name" class="form-control" id="yourName" required>
@@ -74,7 +82,7 @@
                     <div class="col-12">
                       <label for="yourEmail" class="form-label">Your Email</label>
                       <input type="email" name="email" class="form-control" id="yourEmail" required>
-                      <div class="invalid-feedback">Please enter a valid Email adddress!</div>
+                      <div class="invalid-feedback">Please enter a valid Email address!</div>
                     </div>
 
                     <div class="col-12">
@@ -93,6 +101,12 @@
                     </div>
 
                     <div class="col-12">
+                      <label for="yourPasswordRepeat" class="form-label">Repeat Password</label>
+                      <input type="password" name="passwordRepeat" class="form-control" id="yourPasswordRepeat" required>
+                      <div class="invalid-feedback">Please repeat your password!</div>
+                    </div>
+
+                    <div class="col-12">
                       <div class="form-check">
                         <input class="form-check-input" name="terms" type="checkbox" value="" id="acceptTerms" required>
                         <label class="form-check-label" for="acceptTerms">I agree and accept the <a href="#">terms and conditions</a></label>
@@ -100,12 +114,36 @@
                       </div>
                     </div>
                     <div class="col-12">
-                      <button class="btn btn-primary w-100" type="submit">Create Account</button>
+                      <button class="btn btn-primary w-100" type="submit" name="submit">Create Account</button>
                     </div>
                     <div class="col-12">
-                      <p class="small mb-0">Already have an account? <a href="pages-login.html">Log in</a></p>
+                      <p class="small mb-0">Already have an account? <a href="login.php">Log in</a></p>
                     </div>
                   </form>
+
+                  <?php
+                    if (isset($_GET["error"])) {
+                      if ($_GET["error"] == "emptyinput") {
+                        echo "<p>Fill in all fields!</p>";
+                      } else if ($_GET["error"] == "invalidusername") { 
+                        echo "<p>Choose a proper username!</p>";
+                      } else if ($_GET["error"] == "invalidemail") {
+                        echo "<p>Choose a proper email!</p>";
+                      } else if ($_GET["error"] == "passwordsdontmatch") {
+                        echo "<p>Passwords don't match!</p>";
+                      } else if ($_GET["error"] == "usernametaken") {
+                        echo "<p>Username already taken!</p>";
+                      } else if ($_GET["error"] == "stmtfailed") {
+                        echo "<p>Something went wrong, try again!</p>";
+                      } else if ($_GET["error"] == "none") {
+                        echo "<p>You have signed up!</p>";
+                      }
+                    } else if (isset($_GET["signup"])) {
+                      if ($_GET["signup"] == "success") {
+                        echo "<p>You have signed up!</p>";
+                      }
+                    }
+                  ?>
 
                 </div>
               </div>
