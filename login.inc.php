@@ -14,6 +14,7 @@ if (isset($_POST['submit'])) {
     if (empty($username) || empty($password)) {
         header("Location: login.php?error=emptyinput");
         exit();
+    }
 
     // Use prepared statements to prevent SQL injection
     $stmt = $db->prepare("SELECT * FROM User_Profile WHERE username = ? AND UserPassword = ?");
