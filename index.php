@@ -23,7 +23,19 @@
     unset($_SESSION['status']);//remove the session
   }
 
-  // Your PHP BACK CODE HERE
+  // Function to reset ID to 0 when table is empty
+  function resetIdIfEmpty($tableName, $connection) {
+    $query = "SELECT COUNT(*) as count FROM $tableName";
+    $result = $connection->query($query);
+    $row = $result->fetch_assoc();
+    if ($row['count'] == 0) {
+      $query = "ALTER TABLE $tableName AUTO_INCREMENT = 1";
+      $connection->query($query);
+    }
+  }
+
+  // Example usage
+  resetIdIfEmpty('musics', $conn);
 
 ?>
 
@@ -89,7 +101,7 @@
                   <?php if ($musics->num_rows > 0):?>
                    <?php while($row = $musics->fetch_assoc()):?>
                     <tr>
-                      <th scope="row"><?php echo $row["ID"];?></th>
+                      <td><?php echo $counter++; ?></td>
                       <td><?php echo $row["SONG_TITLE"];?></td>
                       <td><?php echo $row["ARTIST"];?></td>
                       <td><?php echo $row["GENRE"];?></td>
